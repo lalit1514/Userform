@@ -1,0 +1,17 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Batches collection - anyone can read, only authenticated can write
+    match /batches/{batchId} {
+      allow read: if true;
+      allow write: if true; // For development - restrict in production
+    }
+    
+    // Bookings collection - anyone can create, only authenticated can read all
+    match /bookings/{bookingId} {
+      allow create: if true;
+      allow read: if true;
+      allow update, delete: if false; // Prevent modifications
+    }
+  }
+}
